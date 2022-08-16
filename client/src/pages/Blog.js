@@ -1,16 +1,19 @@
 import React from 'react';
+import BlogPost from '../components/BlogPost';
 import { useFetch } from '../utils/hooks';
-
-export default function Posts() {
+export default function Blog() {
   const [data] = useFetch('http://localhost:3001/api/posts');
   console.log(data);
   return (
     <div>
-      <h1>List from server{'\n'}</h1>
+      <h1>A Buck Short Blog</h1>
       <ul>
-        {' '}
         {data.map((item) => {
-          return <li key={data.id}>{item.title}</li>;
+          return (
+            <li key={item.id}>
+              <BlogPost data={item} />
+            </li>
+          );
         })}
       </ul>
     </div>

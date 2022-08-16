@@ -17,13 +17,39 @@ router.get('/', async (req, res) => {
 router.get('/posts', async (req, res) => {
   try {
     const postData = await Post.findAll({
-      include: [{ model: User }],
+      include: [{ model: User, attributes: ['name'] }],
     });
     // Serialize data so the template can read it
     const posts = postData.map((post) => post.get({ plain: true }));
     res.render('posts', {
       posts,
       logged_in: req.session.logged_in,
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+//post/:id supposed to show blog post, content, and comments; can add comment if signed in. input box and submit button.
+router.get('/posts/:id', async (req, res) => {
+  try {
+    // Find the logged in user based on the session ID
+    const postData = await Post.findByPk(req.params.id, {
+      include: [
+        { model: User, attributes: ['name'] },
+
+        {
+          model: Comment,
+          attributes: ['id', 'content', 'post_id', 'date_created'],
+        },
+      ],
+    });
+    // const commentData = await Comment.findAll();
+    const post = postData.get({ plain: true });
+    // const comments = commentData.get({ plain: true });
+    console.log(postData);
+    res.render('post', {
+      ...post,
     });
   } catch (err) {
     res.status(500).json(err);
@@ -105,34 +131,6 @@ router.get('/posts', async (req, res) => {
 //     res.render('edit', {
 //       ...post,
 //       logged_in: true,
-//     });
-//   } catch (err) {
-//     res.status(500).json(err);
-//   }
-// });
-// //post/:id supposed to show blog post, content, and comments; can add comment if signed in. input box and submit button.
-// router.get('/post/:id', async (req, res) => {
-//   try {
-//     // Find the logged in user based on the session ID
-//     const postData = await Post.findByPk(req.params.id, {
-//       include: [
-//         { model: User, attributes: ['name'] },
-
-//         {
-//           model: Comment,
-//           attributes: ['id', 'content', 'user_id', 'post_id', 'date_created'],
-//           include: [{ model: User, attributes: ['name'] }],
-//         },
-//       ],
-//     });
-//     // const commentData = await Comment.findAll();
-//     const post = postData.get({ plain: true });
-//     // const comments = commentData.get({ plain: true });
-//     console.log(postData);
-//     res.render('post', {
-//       ...post,
-//       // ...comments,
-//       logged_in: req.session.logged_in,
 //     });
 //   } catch (err) {
 //     res.status(500).json(err);
