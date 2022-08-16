@@ -1,5 +1,5 @@
 import React from 'react';
-import { useFetch } from '../utils/hooks';
+import { useFetch } from '../../../server/utils/hooks';
 
 export default function Posts() {
   const [data] = useFetch('http://localhost:3000/api/posts');

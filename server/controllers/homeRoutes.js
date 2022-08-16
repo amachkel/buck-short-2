@@ -6,6 +6,14 @@ const { User, Post, Comment } = require('../models');
 
 // not logged in, you can only see homepage and login page. When you click posts, you can see content, but can't comment.
 // Homepage
+router.get('/', async (req, res) => {
+  try {
+    res.render('home');
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 router.get('/posts', async (req, res) => {
   try {
     const postData = await Post.findAll({
@@ -13,7 +21,7 @@ router.get('/posts', async (req, res) => {
     });
     // Serialize data so the template can read it
     const posts = postData.map((post) => post.get({ plain: true }));
-    res.render('homepage', {
+    res.render('posts', {
       posts,
       logged_in: req.session.logged_in,
     });
