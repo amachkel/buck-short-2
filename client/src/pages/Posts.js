@@ -1,8 +1,8 @@
 import React from 'react';
-import { useFetch } from '../../../server/utils/hooks';
+import { useFetch } from '../utils/hooks';
 
 export default function Posts() {
-  const [data] = useFetch('http://localhost:3000/api/posts');
+  const [data] = useFetch('http:///api/posts');
   return (
     <div>
       <h1>List from server{'\n'}</h1>

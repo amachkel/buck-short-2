@@ -17,8 +17,8 @@
     "concurrently": "^5.1.0"
   },
   "dependencies": {
-    "follow-redirects": "^1.15.1",
     "dotenv": "^16.0.1",
+    "follow-redirects": "^1.15.1",
     "uuid": "^8.3.2"
   }
 }
